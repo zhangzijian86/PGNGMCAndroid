@@ -2,7 +2,6 @@ package com.pg.ngmc.pgngmcandroid.activity;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -24,8 +23,12 @@ import com.baidu.mapapi.map.MyLocationData;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.pg.ngmc.pgngmcandroid.R;
+import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_Bike;
+import com.pg.ngmc.pgngmcandroid.json.JsonUtil;
 import com.pg.ngmc.pgngmcandroid.tools.LoadingProgressDialog;
 import com.pg.ngmc.pgngmcandroid.tools.Operaton;
+
+import java.util.List;
 
 public class MainActivity extends Activity {
     private static final String ClassName = "MainActivity";
@@ -35,6 +38,7 @@ public class MainActivity extends Activity {
     private MapView mapView;
     private double start1 = 39.958271;
     private double start2 = 116.42652;
+    private List<PGNGMC_Bike> list;
 
     private LoadingProgressDialog dialog;
 
@@ -96,8 +100,7 @@ public class MainActivity extends Activity {
                 double longitude = location.getLongitude();
                 String address = location.getAddrStr();
 
-                new GetBikeAsyncTask().execute(new String[]{String.valueOf(latitude), String.valueOf(longitude)});
-
+                Log.d(ClassName,"===latitude=="+latitude+"===longitude=="+longitude);
                 MyLocationData locData = new MyLocationData.Builder()
                         .accuracy(100)
                                 // 此处设置开发者获取到的方向信息，顺时针0-360
@@ -115,18 +118,20 @@ public class MainActivity extends Activity {
 
                 // 开发者可根据自己实际的业务需求，利用标注覆盖物，在地图指定的位置上添加标注信息。具体实现方法如下：
                 //定义Maker坐标点
-                LatLng point = new LatLng(latitude, longitude);
+//                LatLng point = new LatLng(latitude, longitude);
+//
+//
+//                //构建Marker图标
+//                BitmapDescriptor bitmap = BitmapDescriptorFactory
+//                        .fromResource(R.mipmap.tubiao);
+//                //构建MarkerOption，用于在地图上添加Marker
+//                OverlayOptions option = new MarkerOptions()
+//                        .position(point)
+//                        .icon(bitmap);
+//                //在地图上添加Marker，并显示
+//                mBaiduMap.addOverlay(option);
 
-
-                //构建Marker图标
-                BitmapDescriptor bitmap = BitmapDescriptorFactory
-                        .fromResource(R.mipmap.tubiao);
-                //构建MarkerOption，用于在地图上添加Marker
-                OverlayOptions option = new MarkerOptions()
-                        .position(point)
-                        .icon(bitmap);
-                //在地图上添加Marker，并显示
-                mBaiduMap.addOverlay(option);
+                new GetBikeAsyncTask().execute(new String[]{String.valueOf(latitude), String.valueOf(longitude)});
             }
         }
     }
@@ -169,7 +174,7 @@ public class MainActivity extends Activity {
         protected void onPreExecute() {
             // TODO Auto-generated method stub
             super.onPreExecute();
-            dialog.show();//显示dialog，数据正在处理....
+            dialog.show();
         }
         //完成耗时操作
         @Override
@@ -177,7 +182,12 @@ public class MainActivity extends Activity {
             // TODO Auto-generated method stub
             try{
                 Operaton operaton=new Operaton();
-                String result=operaton.getBikeByPosition("GetBikeByPosition", params[0], params[1]);
+                String result=operaton.GetBikeByPosition("GetBikeByPosition", params[0], params[1]);
+                JsonUtil jsonUtil=new JsonUtil();
+                list=(List<PGNGMC_Bike>) jsonUtil.StringFromJsonBike(result);
+                if(list!=null&&list.size()>0){
+                    return "true";
+                }
             }catch(Exception e){
                 e.printStackTrace();
                 return "false";
@@ -197,17 +207,20 @@ public class MainActivity extends Activity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-//            if("success".equals(result)){
-//                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-//                startActivity(new Intent(getApplication(), MainActivity.class));
-//                overridePendingTransition(R.anim.zoom_enter, R.anim.zoom_exit);
-//                LoginActivity.this.finish();
-//            }else if("false".equals(result)){
-//                Toast.makeText(getApplicationContext(), "用户名密码有误，请重新登录！", Toast.LENGTH_SHORT).show();
-//            }else if("networkerror".equals(result)){
-//                Toast.makeText(getApplicationContext(), "网络加载异常", Toast.LENGTH_SHORT).show();
-//            }
-            dialog.dismiss();//dialog关闭，数据处理完毕
+            Log.d(ClassName, "===result=0=" + result);
+            if(result.equals("true")){
+                for(int i = 0;i < list.size(); i ++){
+                    PGNGMC_Bike PGB = list.get(i);
+                    LatLng point = new LatLng(Double.valueOf(PGB.getPOSITION_Y()), Double.valueOf(PGB.getPOSITION_X()));
+                    BitmapDescriptor bitmap = BitmapDescriptorFactory
+                            .fromResource(R.mipmap.tubiao);
+                    OverlayOptions option = new MarkerOptions()
+                            .position(point)
+                            .icon(bitmap);
+                    mBaiduMap.addOverlay(option);
+                }
+            }
+            dialog.dismiss();
         }
     }
 }
