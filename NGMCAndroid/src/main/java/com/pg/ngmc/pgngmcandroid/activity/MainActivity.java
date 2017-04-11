@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
     private double start1 = 39.958271;
     private double start2 = 116.42652;
     private List<PGNGMC_Bike> list;
+    private int count = 0;
 
     private LoadingProgressDialog dialog;
 
@@ -79,7 +80,7 @@ public class MainActivity extends Activity {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);// 设置定位模式 高精度
         option.setCoorType("bd09ll");// 设置返回定位结果是百度经纬度 默认gcj02
-        option.setScanSpan(5000);// 设置发起定位请求的时间间隔 单位ms
+        option.setScanSpan(3000);// 设置发起定位请求的时间间隔 单位ms
         option.setIsNeedAddress(true);// 设置定位结果包含地址信息
         option.setNeedDeviceDirect(true);// 设置定位结果包含手机机头 的方向
         // 设置定位参数
@@ -101,8 +102,9 @@ public class MainActivity extends Activity {
                 String address = location.getAddrStr();
 
                 Log.d(ClassName,"===latitude=="+latitude+"===longitude=="+longitude);
+
                 MyLocationData locData = new MyLocationData.Builder()
-                        .accuracy(100)
+                        .accuracy(40)
                                 // 此处设置开发者获取到的方向信息，顺时针0-360
                         .direction(90.0f)
                         .latitude(latitude)
@@ -113,7 +115,7 @@ public class MainActivity extends Activity {
                 mBaiduMap.setMyLocationEnabled(true);
                 LatLng ll = new LatLng(latitude, longitude);
                 //MapStatusUpdate u = MapStatusUpdateFactory.newLatLng(ll,f);
-                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, f - 2);//设置缩放比例
+                MapStatusUpdate u = MapStatusUpdateFactory.newLatLngZoom(ll, f - 2.9f);//设置缩放比例
                 mBaiduMap.animateMapStatus(u);
 
                 // 开发者可根据自己实际的业务需求，利用标注覆盖物，在地图指定的位置上添加标注信息。具体实现方法如下：
@@ -130,8 +132,10 @@ public class MainActivity extends Activity {
 //                        .icon(bitmap);
 //                //在地图上添加Marker，并显示
 //                mBaiduMap.addOverlay(option);
-
-                new GetBikeAsyncTask().execute(new String[]{String.valueOf(latitude), String.valueOf(longitude)});
+                if(count==0){
+                    new GetBikeAsyncTask().execute(new String[]{String.valueOf(latitude), String.valueOf(longitude)});
+                }
+                count ++;
             }
         }
     }
