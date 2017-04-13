@@ -88,7 +88,7 @@ public class CategoryTabStrip extends HorizontalScrollView {
 		//getWindowManager().getDefaultDisplay().getMetrics(metrics);
 
 
-		defaultTabLayoutParams = new LinearLayout.LayoutParams(250, LayoutParams.MATCH_PARENT);//LayoutParams.WRAP_CONTENT
+		defaultTabLayoutParams = new LinearLayout.LayoutParams(200, LayoutParams.MATCH_PARENT);//LayoutParams.WRAP_CONTENT
 
 
 		indicator = getResources().getDrawable(R.drawable.bg_category_indicator);

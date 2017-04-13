@@ -1,10 +1,15 @@
 <resources>
+    <string name="title">南瓜马车</string>
+    <string name="biketitle">用车</string>
+    <string name="activitytitle">活动</string>
+    <string name="tickettitle">购票</string>
+
     <string name="app_name">PGNGMCAndroid</string>
 
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
 
     <string name="category_video">    视频    </string>
-    <string name="category_hot">    热点    </string>
+
     <string name="category_essay_joke">    段子    </string>
 </resources>

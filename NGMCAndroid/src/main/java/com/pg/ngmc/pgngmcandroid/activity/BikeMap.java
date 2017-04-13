@@ -30,7 +30,7 @@ import com.pg.ngmc.pgngmcandroid.tools.Operaton;
 
 import java.util.List;
 
-public class MainActivity1111 extends Activity {
+public class BikeMap extends Activity {
     private static final String ClassName = "MainActivity";
     private LocationClient mLocationClient;
     private BDLocationListener mBDLocationListener;

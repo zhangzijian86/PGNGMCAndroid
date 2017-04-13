@@ -12,6 +12,6 @@
     <color name="category_tab_text_dark">#fffafafa</color>
     <color name="category_tab_highlight_text">#fffafafa</color>
     <color name="category_tab_highlight_text_dark">#ffd43d3d</color>
-    <color name="category_tab_highlight_bg">#ffd43d3d</color>
+    <color name="category_tab_highlight_bg">#FFAA22</color>
     <color name="category_tab_highlight_dark_bg">#fffafafa</color>
 </resources>

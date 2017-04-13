@@ -71,9 +71,9 @@ public class MainActivity extends FragmentActivity {
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
-            catalogs.add(getString(R.string.category_hot));
-            catalogs.add(getString(R.string.category_video));
-            catalogs.add(getString(R.string.category_essay_joke));
+            catalogs.add(getString(R.string.biketitle));
+            catalogs.add(getString(R.string.activitytitle));
+            catalogs.add(getString(R.string.tickettitle));
         }
 
         @Override
@@ -88,7 +88,13 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            return NewsFragment.newInstance(position);
+
+            if(position==0){
+                return NewsFragment.newInstance(position);
+            }else{
+                return NewsFragment.newInstance(position);
+            }
+
         }
 
     }

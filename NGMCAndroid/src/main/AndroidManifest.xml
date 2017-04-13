@@ -43,9 +43,9 @@
             android:launchMode="singleTask">
         </activity>
 
-        <!-- MainActivity1111 -->
+        <!-- BikeMap -->
         <activity android:theme="@android:style/Theme.NoTitleBar"
-            android:name=".activity.MainActivity1111"
+            android:name=".activity.BikeMap"
             android:screenOrientation="portrait"
             android:launchMode="singleTask">
         </activity>
