@@ -15,6 +15,16 @@ public class ConnNet
 //	private static final String URLVAR="http://192.168.1.109:8080/WebRoot/";
 //	private static final String URLVAR="http://192.8.50.202:8080/WebRoot/";
 	private static final String URLVAR="http://192.168.1.110:8080/WebRoot/";
+
+	public String getWebViewURLVAR() {
+		return WebViewURLVAR;
+	}
+
+	public void setWebViewURLVAR(String webViewURLVAR) {
+		WebViewURLVAR = webViewURLVAR;
+	}
+
+	private String WebViewURLVAR="http://192.168.1.110:8080/WebRoot/";
 //	private static final String URLVAR="http://192.168.1.110:8080/WebRoot/";
 	//将路径定义为一个常量，修改的时候也好更改
 	//通过url获取网络连接  connection 

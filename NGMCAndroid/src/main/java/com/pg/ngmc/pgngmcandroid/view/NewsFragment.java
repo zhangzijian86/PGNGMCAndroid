@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.TextView;
@@ -32,6 +33,7 @@ import com.baidu.mapapi.model.LatLng;
 import com.pg.ngmc.pgngmcandroid.R;
 import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_Bike;
 import com.pg.ngmc.pgngmcandroid.json.JsonUtil;
+import com.pg.ngmc.pgngmcandroid.tools.ConnNet;
 import com.pg.ngmc.pgngmcandroid.tools.LoadingProgressDialog;
 import com.pg.ngmc.pgngmcandroid.tools.Operaton;
 
@@ -46,12 +48,15 @@ public class NewsFragment extends Fragment {
 	private LocationClient mLocationClient;
 	private BDLocationListener mBDLocationListener;
 	private BaiduMap mBaiduMap;
-	private  MapView mapView;
+	private MapView mapView;
+	private WebView webView;
 	private double start1 = 39.958271;
 	private double start2 = 116.42652;
 	private List<PGNGMC_Bike> list;
 	private int count = 0;
 	private LoadingProgressDialog dialog;
+
+	private ConnNet connNet;
 
 	@Override
 	public void onDestroy() {
@@ -85,6 +90,7 @@ public class NewsFragment extends Fragment {
 		position = getArguments().getInt(ARG_POSITION);
 
 		Log.d(ClassName, "=onCreate=11==");
+		connNet=new ConnNet();
 //		requestWindowFeature(Window.FEATURE_NO_TITLE);
 //		setContentView(R.layout.activity_mapdemo);
 		dialog=new LoadingProgressDialog(getActivity(),"正在加载...");
@@ -248,24 +254,30 @@ public class NewsFragment extends Fragment {
 			mLocationClient.registerLocationListener(mBDLocationListener);
 			getLocation(mapView);
 			return v;
-		}else{
-			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-			FrameLayout fl = new FrameLayout(getActivity());
-			fl.setLayoutParams(params);
-
-			final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources()
-					.getDisplayMetrics());
-
-
-			TextView v = new TextView(getActivity());
-			params.setMargins(margin, margin, margin, margin);
-			v.setLayoutParams(params);
-			v.setLayoutParams(params);
-			v.setGravity(Gravity.CENTER);
-			v.setText("PAGE " + (position + 1));
-
-			fl.addView(v);
-			return fl;
+		}else {//if(position==1)
+			View v = inflater.inflate(R.layout.activity_webview, container, false);
+			webView = (WebView) v.findViewById(R.id.webView);
+			webView.loadUrl(connNet.getWebViewURLVAR()+"1.html");
+			return v;
 		}
+//		else{
+//			LayoutParams params = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+//			FrameLayout fl = new FrameLayout(getActivity());
+//			fl.setLayoutParams(params);
+//
+//			final int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 3, getResources()
+//					.getDisplayMetrics());
+//
+//
+//			TextView v = new TextView(getActivity());
+//			params.setMargins(margin, margin, margin, margin);
+//			v.setLayoutParams(params);
+//			v.setLayoutParams(params);
+//			v.setGravity(Gravity.CENTER);
+//			v.setText("PAGE " + (position + 1));
+//
+//			fl.addView(v);
+//			return fl;
+//		}
 	}
 }
