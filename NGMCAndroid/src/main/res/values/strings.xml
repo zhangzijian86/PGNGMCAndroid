@@ -12,4 +12,11 @@
     <string name="category_video">    视频    </string>
 
     <string name="category_essay_joke">    段子    </string>
+
+    <string name="zhuye_yonghu">jy863868</string>
+
+    <string name="zhuye_shezhi">设置</string>
+
+    <string name="zhuye_tuichu">退出</string>
+
 </resources>

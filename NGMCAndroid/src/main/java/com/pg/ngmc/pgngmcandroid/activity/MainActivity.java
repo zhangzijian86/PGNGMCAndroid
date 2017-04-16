@@ -1,7 +1,5 @@
 package com.pg.ngmc.pgngmcandroid.activity;
 
-import android.app.Activity;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,30 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MarkerOptions;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.map.OverlayOptions;
-import com.baidu.mapapi.model.LatLng;
 import com.pg.ngmc.pgngmcandroid.R;
-import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_Bike;
-import com.pg.ngmc.pgngmcandroid.json.JsonUtil;
-import com.pg.ngmc.pgngmcandroid.tools.LoadingProgressDialog;
-import com.pg.ngmc.pgngmcandroid.tools.Operaton;
 import com.pg.ngmc.pgngmcandroid.view.CategoryTabStrip;
 import com.pg.ngmc.pgngmcandroid.view.NewsFragment;
 
@@ -44,10 +26,50 @@ public class MainActivity extends FragmentActivity {
     private ViewPager pager;
     private MyPagerAdapter adapter;
 
+    private TranslateAnimation mHiddenAction;
+    private TranslateAnimation mShowAction;
+
+    private LinearLayout zuoce;
+
+    private ImageView top_head;
+    private RelativeLayout zuocetouming;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,-1.0f ,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        mShowAction.setDuration(500);
+
+        mHiddenAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+                0.0f, Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
+                0.0f);
+        mHiddenAction.setDuration(500);
+
+        zuoce  = (LinearLayout)findViewById(R.id.zuoce);
+
+        top_head  = (ImageView)findViewById(R.id.top_head);
+        top_head.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if(zuoce.getVisibility()!=View.VISIBLE){
+                    zuoce.startAnimation(mShowAction);
+                    zuoce.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+        zuocetouming = (RelativeLayout)findViewById(R.id.zuocetouming);
+        zuocetouming.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                zuoce.startAnimation(mHiddenAction);
+                zuoce.setVisibility(View.INVISIBLE);
+            }
+        });
 
         DisplayMetrics dm = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(dm);
