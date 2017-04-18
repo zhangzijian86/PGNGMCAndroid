@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -30,6 +31,7 @@ public class MainActivity extends FragmentActivity {
     private TranslateAnimation mShowAction;
 
     private LinearLayout zuoce;
+    private RelativeLayout head;
 
     private ImageView top_head;
     private RelativeLayout zuocetouming;
@@ -51,6 +53,15 @@ public class MainActivity extends FragmentActivity {
         mHiddenAction.setDuration(500);
 
         zuoce  = (LinearLayout)findViewById(R.id.zuoce);
+        head  = (RelativeLayout)findViewById(R.id.head);
+
+
+        zuoce.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
 
         top_head  = (ImageView)findViewById(R.id.top_head);
         top_head.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +70,8 @@ public class MainActivity extends FragmentActivity {
                 if(zuoce.getVisibility()!=View.VISIBLE){
                     zuoce.startAnimation(mShowAction);
                     zuoce.setVisibility(View.VISIBLE);
+                    head.startAnimation(mHiddenAction);
+                    head.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -68,6 +81,8 @@ public class MainActivity extends FragmentActivity {
             public void onClick(View arg0) {
                 zuoce.startAnimation(mHiddenAction);
                 zuoce.setVisibility(View.INVISIBLE);
+                head.startAnimation(mShowAction);
+                head.setVisibility(View.VISIBLE);
             }
         });
 
