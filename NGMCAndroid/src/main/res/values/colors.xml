@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="activity_bg_color">#fffafafa</color>
+    <color name="activity_bg_color">#ffeeeeee</color>
     <color name="top_category_bar_background">#ffeeeeee</color>
     <color name="divider">#ffdddddd</color>
 

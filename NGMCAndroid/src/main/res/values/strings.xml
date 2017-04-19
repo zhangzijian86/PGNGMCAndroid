@@ -19,4 +19,12 @@
 
     <string name="zhuye_tuichu">退出</string>
 
+    <string name="wode_qianbao">我的钱包</string>
+    <string name="wode_xingcheng">我的行程</string>
+    <string name="wode_youhui">我的优惠</string>
+    <string name="yaoqing_haoyou">邀请好友</string>
+    <string name="yonghu_zhinan">用户指南</string>
+    <string name="guanyu_women">关于我们</string>
+
+
 </resources>
