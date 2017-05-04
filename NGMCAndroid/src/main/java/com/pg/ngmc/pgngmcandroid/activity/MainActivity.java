@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
@@ -31,6 +32,8 @@ public class MainActivity extends FragmentActivity {
     private TranslateAnimation mShowAction;
 
     private LinearLayout zuoce;
+    private ImageView saomakaisuo;
+
     private RelativeLayout head;
 
     private ImageView top_head;
@@ -55,6 +58,13 @@ public class MainActivity extends FragmentActivity {
         zuoce  = (LinearLayout)findViewById(R.id.zuoce);
         head  = (RelativeLayout)findViewById(R.id.head);
 
+        saomakaisuo = (ImageView)findViewById(R.id.saomakaisuo);
+        saomakaisuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                Log.d("=====MainActivity=====","====saomakaisuo====");
+            }
+        });
 
         zuoce.setOnTouchListener(new View.OnTouchListener() {
             @Override
