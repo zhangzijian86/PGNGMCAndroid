@@ -28,5 +28,8 @@
     <string name="yonghu_zhinan">用户指南</string>
     <string name="guanyu_women">关于我们</string>
 
+    <string name="menu_settings">Settings</string>
+    <string name="scan_text">将二维码放入框内, 即可自动扫描</string>
+
 
 </resources>

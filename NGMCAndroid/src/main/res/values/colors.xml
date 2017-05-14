@@ -14,4 +14,8 @@
     <color name="category_tab_highlight_text_dark">#ffd43d3d</color>
     <color name="category_tab_highlight_bg">#FFAA22</color>
     <color name="category_tab_highlight_dark_bg">#fffafafa</color>
+
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="possible_result_points">#c0ffff00</color>
 </resources>

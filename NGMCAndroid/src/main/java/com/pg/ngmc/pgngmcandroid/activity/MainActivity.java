@@ -1,5 +1,6 @@
 package com.pg.ngmc.pgngmcandroid.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -39,6 +40,8 @@ public class MainActivity extends FragmentActivity {
     private ImageView top_head;
     private RelativeLayout zuocetouming;
 
+    private final static int SCANNIN_GREQUEST_CODE = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +66,10 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View arg0) {
                 Log.d("=====MainActivity=====","====saomakaisuo====");
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this, MipcaActivityCapture.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
             }
         });
 
@@ -110,6 +117,19 @@ public class MainActivity extends FragmentActivity {
 
         tabs.setViewPager(pager);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case SCANNIN_GREQUEST_CODE:
+                if(resultCode == RESULT_OK){
+                    Bundle bundle = data.getExtras();
+                    Log.d("=====MainActivity=====", "====onActivityResult====" + bundle.getString("result"));
+                }
+                break;
+        }
     }
 
     public class MyPagerAdapter extends FragmentPagerAdapter {
