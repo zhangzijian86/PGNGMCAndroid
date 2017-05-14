@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.pg.ngmc.pgngmcandroid.R;
+import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_APP_User;
 import com.pg.ngmc.pgngmcandroid.view.CategoryTabStrip;
 import com.pg.ngmc.pgngmcandroid.view.NewsFragment;
 
@@ -25,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends FragmentActivity {
+
+    private PGNGMC_APP_User pgngmc_app_user;
+
     private CategoryTabStrip tabs;
     private ViewPager pager;
     private MyPagerAdapter adapter;
@@ -38,6 +42,7 @@ public class MainActivity extends FragmentActivity {
     private RelativeLayout head;
 
     private ImageView top_head;
+    private ImageView top_more;
     private RelativeLayout zuocetouming;
 
     private final static int SCANNIN_GREQUEST_CODE = 1;
@@ -46,6 +51,8 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        pgngmc_app_user = (PGNGMC_APP_User) getApplication();
 
         mShowAction = new TranslateAnimation(Animation.RELATIVE_TO_SELF,-1.0f ,
                 Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF,
@@ -65,11 +72,15 @@ public class MainActivity extends FragmentActivity {
         saomakaisuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Log.d("=====MainActivity=====","====saomakaisuo====");
-                Intent intent = new Intent();
-                intent.setClass(MainActivity.this, MipcaActivityCapture.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                Log.d("=====MainActivity=====", "====saomakaisuo====");
+                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
+                } else {
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, MipcaActivityCapture.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                }
             }
         });
 
@@ -84,14 +95,31 @@ public class MainActivity extends FragmentActivity {
         top_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if(zuoce.getVisibility()!=View.VISIBLE){
-                    zuoce.startAnimation(mShowAction);
-                    zuoce.setVisibility(View.VISIBLE);
-                    head.startAnimation(mHiddenAction);
-                    head.setVisibility(View.INVISIBLE);
+                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+                    Log.d("=====MainActivity=====", "====top_head===false=");
+                } else {
+                    if (zuoce.getVisibility() != View.VISIBLE) {
+                        zuoce.startAnimation(mShowAction);
+                        zuoce.setVisibility(View.VISIBLE);
+                        head.startAnimation(mHiddenAction);
+                        head.setVisibility(View.INVISIBLE);
+                    }
                 }
             }
         });
+
+        top_more = (ImageView)findViewById(R.id.top_more);
+        top_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+                    Log.d("=====MainActivity=====", "====top_more===false=");
+                } else {
+
+                }
+            }
+        });
+
         zuocetouming = (RelativeLayout)findViewById(R.id.zuocetouming);
         zuocetouming.setOnClickListener(new View.OnClickListener() {
             @Override

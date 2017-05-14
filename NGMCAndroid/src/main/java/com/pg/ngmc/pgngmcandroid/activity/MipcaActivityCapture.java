@@ -81,8 +81,8 @@ public class MipcaActivityCapture extends Activity implements Callback , View.On
 		hasSurface = false;
 		inactivityTimer = new InactivityTimer(this);
 		
-		ImageButton mImageButton = (ImageButton) findViewById(R.id.button_function);
-		mImageButton.setOnClickListener(this);
+		//ImageButton mImageButton = (ImageButton) findViewById(R.id.button_function);
+		//mImageButton.setOnClickListener(this);
 	}
 	
 	
@@ -92,13 +92,13 @@ public class MipcaActivityCapture extends Activity implements Callback , View.On
 		case R.id.button_back:
 			this.finish();
 			break;
-		case R.id.button_function:
-			//打开手机中的相册
-			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); //"android.intent.action.GET_CONTENT"
-	        innerIntent.setType("image/*");
-	        Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
-	        this.startActivityForResult(wrapperIntent, REQUEST_CODE);
-			break;
+//		case R.id.button_function:
+//			//打开手机中的相册
+//			Intent innerIntent = new Intent(Intent.ACTION_GET_CONTENT); //"android.intent.action.GET_CONTENT"
+//	        innerIntent.setType("image/*");
+//	        Intent wrapperIntent = Intent.createChooser(innerIntent, "选择二维码图片");
+//	        this.startActivityForResult(wrapperIntent, REQUEST_CODE);
+//			break;
 		}
 	}
 	

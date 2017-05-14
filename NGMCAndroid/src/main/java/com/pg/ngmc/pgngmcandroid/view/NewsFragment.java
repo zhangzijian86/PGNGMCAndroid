@@ -239,7 +239,8 @@ public class NewsFragment extends Fragment {
 			SDKInitializer.initialize(getActivity().getApplicationContext());
 			View v = inflater.inflate(R.layout.activity_mapdemo, container, false);
 			mapView = (MapView) v.findViewById(R.id.mapView);
-
+			mapView.showScaleControl(false);
+			mapView.showZoomControls(false);
 			mBaiduMap = mapView.getMap();
 			//普通地图
 			mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
