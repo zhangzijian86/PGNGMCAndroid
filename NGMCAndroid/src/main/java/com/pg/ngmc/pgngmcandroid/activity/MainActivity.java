@@ -40,6 +40,7 @@ public class MainActivity extends FragmentActivity {
     private ImageView saomakaisuo;
 
     private RelativeLayout head;
+    private RelativeLayout jindu;
 
     private ImageView top_head;
     private ImageView top_more;
@@ -67,20 +68,21 @@ public class MainActivity extends FragmentActivity {
 
         zuoce  = (LinearLayout)findViewById(R.id.zuoce);
         head  = (RelativeLayout)findViewById(R.id.head);
+        jindu  = (RelativeLayout)findViewById(R.id.jindu);
 
         saomakaisuo = (ImageView)findViewById(R.id.saomakaisuo);
         saomakaisuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 Log.d("=====MainActivity=====", "====saomakaisuo====");
-                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
-                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
-                } else {
+//                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+//                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
+//                } else {
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, MipcaActivityCapture.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
-                }
+//                }
             }
         });
 
@@ -155,6 +157,7 @@ public class MainActivity extends FragmentActivity {
                 if(resultCode == RESULT_OK){
                     Bundle bundle = data.getExtras();
                     Log.d("=====MainActivity=====", "====onActivityResult====" + bundle.getString("result"));
+                    jindu.setVisibility(View.VISIBLE);
                 }
                 break;
         }

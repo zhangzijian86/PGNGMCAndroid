@@ -66,7 +66,9 @@ public class NewsFragment extends Fragment {
 		if (mLocationClient != null) {
 			mLocationClient.unRegisterLocationListener(mBDLocationListener);
 		}
-		mapView.onDestroy();
+		if(mapView!=null){
+			mapView.onDestroy();
+		}
 	}
 
 	@Override

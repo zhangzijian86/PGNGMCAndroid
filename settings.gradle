@@ -1,1 +1,1 @@
-include ':NGMCAndroid'
+include ':NGMCAndroid', ':library'
