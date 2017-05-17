@@ -29,6 +29,49 @@ import android.util.Log;
 
 public class Operaton
 {
+	public String GetBikeStatus(String url,String resultCode)
+	{
+		String result=null;
+		ConnNet connNet=new ConnNet();
+		List<NameValuePair> params=new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("resultCode", resultCode));
+		try {
+			HttpEntity entity=new UrlEncodedFormEntity(params, HTTP.UTF_8);
+			HttpPost httpPost=connNet.gethttPost(url);
+			System.out.println(httpPost.toString());
+			httpPost.setEntity(entity);
+			HttpClient client=new DefaultHttpClient();
+			HttpResponse httpResponse=client.execute(httpPost);
+			if (httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
+			{
+				result=EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+				Log.d("=Operaton=", "=getBikeByPosition====true==="+result);
+				if(result.equals("true")){
+					result = "true";
+				}else{
+					result = "false";
+				}
+			}
+			else
+			{
+				Log.d("=Operaton=", "=getBikeByPosition====false===");
+				result="false";
+			}
+		} catch (UnsupportedEncodingException e) {
+
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+
+			e.printStackTrace();
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return result;
+	}
 
 	public String GetBikeByPosition(String url,String latitude,String longitude)
 	{

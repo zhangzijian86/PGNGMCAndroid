@@ -1,7 +1,10 @@
 package com.pg.ngmc.pgngmcandroid.activity;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -16,9 +19,19 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
+import com.baidu.mapapi.model.LatLng;
 import com.pg.ngmc.pgngmcandroid.R;
 import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_APP_User;
+import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_Bike;
+import com.pg.ngmc.pgngmcandroid.json.JsonUtil;
+import com.pg.ngmc.pgngmcandroid.tools.Operaton;
 import com.pg.ngmc.pgngmcandroid.view.CategoryTabStrip;
 import com.pg.ngmc.pgngmcandroid.view.NewsFragment;
 
@@ -46,12 +59,27 @@ public class MainActivity extends FragmentActivity {
     private ImageView top_more;
     private RelativeLayout zuocetouming;
 
+    private String resultCodeStr;
+
+    int len = 0;
+
+    private SeekBar seekBar;
+
     private final static int SCANNIN_GREQUEST_CODE = 1;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        len = 0;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+
+        resultCodeStr = "";
 
         pgngmc_app_user = (PGNGMC_APP_User) getApplication();
 
@@ -78,6 +106,9 @@ public class MainActivity extends FragmentActivity {
 //                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
 //                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
 //                } else {
+                    resultCodeStr = "";
+                    len=0;
+                    seekBar.setProgress(len);
                     Intent intent = new Intent();
                     intent.setClass(MainActivity.this, MipcaActivityCapture.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -147,7 +178,38 @@ public class MainActivity extends FragmentActivity {
 
         tabs.setViewPager(pager);
 
+        seekBar = (SeekBar) findViewById(R.id.seekBar);
+        seekBar.setMax(100);
     }
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what)
+            {
+                case 0:
+                    jindu.setVisibility(View.INVISIBLE);
+                    resultCodeStr = "";
+                    seekBar.setProgress(100);
+                    break;
+                case 1:
+                    if (seekBar.getProgress()<100)
+                    {
+                        len += 15;
+                        handler.sendEmptyMessageDelayed(1, 1500);
+                        new GetBikeStatusAsyncTask().execute(new String[]{resultCodeStr});
+                        seekBar.setProgress(len);
+                    }else{
+                        jindu.setVisibility(View.INVISIBLE);
+                        resultCodeStr = "";
+                        Toast.makeText(getApplicationContext(), "开锁失败请重试！", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+            }
+
+        }
+
+    };
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -157,7 +219,15 @@ public class MainActivity extends FragmentActivity {
                 if(resultCode == RESULT_OK){
                     Bundle bundle = data.getExtras();
                     Log.d("=====MainActivity=====", "====onActivityResult====" + bundle.getString("result"));
+                    resultCodeStr =  bundle.getString("result");
                     jindu.setVisibility(View.VISIBLE);
+                    //jindu.setVisibility(View.INVISIBLE);
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            handler.sendEmptyMessage(1);
+                        }
+                    }, 500);
                 }
                 break;
         }
@@ -194,6 +264,47 @@ public class MainActivity extends FragmentActivity {
             }
 
         }
+    }
 
+    /**
+     * dis：AsyncTask参数类型：
+     * 第一个参数标书传入到异步任务中并进行操作，通常是网络的路径
+     * 第二个参数表示进度的刻度
+     * 第三个参数表示返回的结果类型
+     * */
+    private class GetBikeStatusAsyncTask extends AsyncTask<String, String, String> {
+        //任务执行之前的操作
+        @Override
+        protected void onPreExecute() {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
+        //完成耗时操作
+        @Override
+        protected String doInBackground(String... params) {
+            // TODO Auto-generated method stub
+            try{
+                Operaton operaton=new Operaton();
+                String result=operaton.GetBikeStatus("GetBikeStatus", params[0]);
+                return result;
+            }catch(Exception e){
+                e.printStackTrace();
+                return "false";
+            }
+        }
+        @Override
+        protected void onProgressUpdate(String... values) {
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(values);
+
+        }
+        @Override
+        protected void onPostExecute(String result) {
+            // TODO Auto-generated method stub
+            super.onPostExecute(result);
+            if(result!=null&&result.equals("true")){
+                handler.sendEmptyMessage(0);
+            }
+        }
     }
 }
