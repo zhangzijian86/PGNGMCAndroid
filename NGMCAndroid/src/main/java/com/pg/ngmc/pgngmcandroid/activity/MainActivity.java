@@ -187,10 +187,23 @@ public class MainActivity extends FragmentActivity {
         public void handleMessage(Message msg) {
             switch (msg.what)
             {
-                case 0:
+                case 4://故障
                     jindu.setVisibility(View.INVISIBLE);
                     resultCodeStr = "";
                     seekBar.setProgress(100);
+                    Toast.makeText(getApplicationContext(), "车辆故障请使用其他车辆！", Toast.LENGTH_SHORT).show();
+                    break;
+                case 3://维修
+                    jindu.setVisibility(View.INVISIBLE);
+                    resultCodeStr = "";
+                    seekBar.setProgress(100);
+                    Toast.makeText(getApplicationContext(), "车辆维修中请使用其他车辆！", Toast.LENGTH_SHORT).show();
+                    break;
+                case 2:
+                    jindu.setVisibility(View.INVISIBLE);
+                    resultCodeStr = "";
+                    seekBar.setProgress(100);
+                    Toast.makeText(getApplicationContext(), "车辆报废请使用其他车辆！", Toast.LENGTH_SHORT).show();
                     break;
                 case 1:
                     if (seekBar.getProgress()<100)
@@ -204,6 +217,12 @@ public class MainActivity extends FragmentActivity {
                         resultCodeStr = "";
                         Toast.makeText(getApplicationContext(), "开锁失败请重试！", Toast.LENGTH_SHORT).show();
                     }
+                    break;
+                case 0://开锁成功
+                    jindu.setVisibility(View.INVISIBLE);
+                    resultCodeStr = "";
+                    seekBar.setProgress(100);
+                    Toast.makeText(getApplicationContext(), "开锁成功！", Toast.LENGTH_SHORT).show();
                     break;
             }
 
@@ -302,8 +321,22 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            if(result!=null&&result.equals("true")){
-                handler.sendEmptyMessage(0);
+            if(result!=null&&!result.equals("false")){
+                if(result.equals("unlock")){//开锁成功
+                    handler.sendEmptyMessage(0);
+                }
+                if(result.equals("lock")){
+
+                }
+                if(result.equals("report")){//故障
+                    handler.sendEmptyMessage(4);
+                }
+                if(result.equals("repair")){//维修
+                    handler.sendEmptyMessage(3);
+                }
+                if(result.equals("Scrap")){//报废
+                    handler.sendEmptyMessage(2);
+                }
             }
         }
     }

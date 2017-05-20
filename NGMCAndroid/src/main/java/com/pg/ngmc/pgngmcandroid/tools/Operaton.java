@@ -46,11 +46,6 @@ public class Operaton
 			{
 				result=EntityUtils.toString(httpResponse.getEntity(), "utf-8");
 				Log.d("=Operaton=", "=getBikeByPosition====true==="+result);
-				if(result.equals("true")){
-					result = "true";
-				}else{
-					result = "false";
-				}
 			}
 			else
 			{
