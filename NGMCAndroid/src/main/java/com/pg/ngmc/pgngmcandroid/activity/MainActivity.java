@@ -185,21 +185,25 @@ public class MainActivity extends FragmentActivity {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            Log.d("=====handler=====", "====msg="+msg.what);
             switch (msg.what)
             {
                 case 4://故障
+                    Log.d("=====handler=====", "====故障=");
                     jindu.setVisibility(View.INVISIBLE);
                     resultCodeStr = "";
                     seekBar.setProgress(100);
                     Toast.makeText(getApplicationContext(), "车辆故障请使用其他车辆！", Toast.LENGTH_SHORT).show();
                     break;
                 case 3://维修
+                    Log.d("=====handler=====", "====维修=");
                     jindu.setVisibility(View.INVISIBLE);
                     resultCodeStr = "";
                     seekBar.setProgress(100);
                     Toast.makeText(getApplicationContext(), "车辆维修中请使用其他车辆！", Toast.LENGTH_SHORT).show();
                     break;
-                case 2:
+                case 2://报废
+                    Log.d("=====handler=====", "====报废=");
                     jindu.setVisibility(View.INVISIBLE);
                     resultCodeStr = "";
                     seekBar.setProgress(100);
@@ -209,16 +213,19 @@ public class MainActivity extends FragmentActivity {
                     if (seekBar.getProgress()<100)
                     {
                         len += 15;
-                        handler.sendEmptyMessageDelayed(1, 1500);
+                        handler.sendEmptyMessageDelayed(1, 1000);
                         new GetBikeStatusAsyncTask().execute(new String[]{resultCodeStr});
                         seekBar.setProgress(len);
                     }else{
-                        jindu.setVisibility(View.INVISIBLE);
-                        resultCodeStr = "";
-                        Toast.makeText(getApplicationContext(), "开锁失败请重试！", Toast.LENGTH_SHORT).show();
+                        if(len>100){
+                            jindu.setVisibility(View.INVISIBLE);
+                            resultCodeStr = "";
+                            Toast.makeText(getApplicationContext(), "开锁失败请重试！", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     break;
                 case 0://开锁成功
+                    Log.d("=====handler=====", "====成功=");
                     jindu.setVisibility(View.INVISIBLE);
                     resultCodeStr = "";
                     seekBar.setProgress(100);
@@ -321,22 +328,31 @@ public class MainActivity extends FragmentActivity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
+            Log.d("=====onPostExecute=====", "====result==1==" + result);
+            result = result.replace("\"","");
             if(result!=null&&!result.equals("false")){
+                Log.d("=====onPostExecute=====", "====result==2=="+result);
                 if(result.equals("unlock")){//开锁成功
                     handler.sendEmptyMessage(0);
+                    Log.d("=====onPostExecute=====", "====成功=");
                 }
                 if(result.equals("lock")){
-
+                    Log.d("=====onPostExecute=====", "====lock=");
                 }
                 if(result.equals("report")){//故障
+                    Log.d("=====onPostExecute=====", "====故障=");
                     handler.sendEmptyMessage(4);
                 }
                 if(result.equals("repair")){//维修
+                    Log.d("=====onPostExecute=====", "====维修=");
                     handler.sendEmptyMessage(3);
                 }
                 if(result.equals("Scrap")){//报废
+                    Log.d("=====onPostExecute=====", "====报废=");
                     handler.sendEmptyMessage(2);
                 }
+            }else{
+                Log.d("=====onPostExecute=====", "====else=");
             }
         }
     }
