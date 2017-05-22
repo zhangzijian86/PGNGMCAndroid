@@ -103,9 +103,10 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View arg0) {
                 Log.d("=====MainActivity=====", "====saomakaisuo====");
-//                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
-//                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
-//                } else {
+                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+                    Log.d("=====MainActivity=====", "====saomakaisuo===false=");
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                } else {
                     resultCodeStr = "";
                     len=0;
                     seekBar.setProgress(len);
@@ -113,7 +114,7 @@ public class MainActivity extends FragmentActivity {
                     intent.setClass(MainActivity.this, MipcaActivityCapture.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
-//                }
+                }
             }
         });
 
@@ -128,16 +129,16 @@ public class MainActivity extends FragmentActivity {
         top_head.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
-                    Log.d("=====MainActivity=====", "====top_head===false=");
-                } else {
+//                if (pgngmc_app_user.getUSER_Mobile().equals("")) {
+//                    Log.d("=====MainActivity=====", "====top_head===false=");
+//                } else {
                     if (zuoce.getVisibility() != View.VISIBLE) {
                         zuoce.startAnimation(mShowAction);
                         zuoce.setVisibility(View.VISIBLE);
                         head.startAnimation(mHiddenAction);
                         head.setVisibility(View.INVISIBLE);
                     }
-                }
+//                }
             }
         });
 

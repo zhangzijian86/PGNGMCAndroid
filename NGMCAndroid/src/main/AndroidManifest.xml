@@ -69,6 +69,14 @@
             android:windowSoftInputMode="stateAlwaysHidden" >
         </activity>
 
+        <!-- LoginActivity -->
+        <activity
+            android:name="com.pg.ngmc.pgngmcandroid.activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+
         <service
             android:name="com.baidu.location.f"
             android:enabled="true"
