@@ -26,15 +26,11 @@ import com.pg.ngmc.pgngmcandroid.tools.Operaton;
 import java.util.List;
 
 public class LoginActivity extends Activity {
-	private Button btdenglu;
-	private Button btzhuce;
-	private EditText passwdedit;
-	private EditText namededit;
-	private TextView nametext;
-	private TextView passwdtext;
+	private Button queding;
+	private Button yanzhengmabt;
+	private EditText shoujihaoma;
+	private EditText yanzhengma;
 	private PGNGMC_APP_User pgngmc_app_user;
-	private String usermobile;
-	private String loginPass;
 	private LoadingProgressDialog dialog;
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +40,48 @@ public class LoginActivity extends Activity {
 
 		 pgngmc_app_user = (PGNGMC_APP_User) getApplication();
 
+		 shoujihaoma = (EditText) findViewById(R.id.shoujihaoma);
+		 yanzhengma = (EditText) findViewById(R.id.yanzhengma);
+		 queding  = (Button) findViewById(R.id.queding);
+		 yanzhengmabt  = (Button) findViewById(R.id.yanzhengmabt);
+
+
+		 shoujihaoma.addTextChangedListener(textWatcher);
+		 yanzhengma.addTextChangedListener(textWatcher);
+
 		 dialog=new LoadingProgressDialog(this,"正在加载...");
 	 }
-	 	 
- 	/**
+
+	private TextWatcher textWatcher = new TextWatcher() {
+
+		@Override
+		public void onTextChanged(CharSequence s, int start, int before,
+								  int count) {
+			if(shoujihaoma.getText().length()>=11){
+				yanzhengmabt.setEnabled(true);
+			}else{
+				yanzhengmabt.setEnabled(false);
+			}
+			if(shoujihaoma.getText().length()>=11&&yanzhengma.getText().length()>=6){
+				queding.setEnabled(true);
+			}else{
+				queding.setEnabled(false);
+			}
+		}
+
+		@Override
+		public void beforeTextChanged(CharSequence s, int start, int count,
+									  int after) {
+
+		}
+
+		@Override
+		public void afterTextChanged(Editable s) {
+
+		}
+	};
+
+	/**
  	 * dis：AsyncTask参数类型：
  	 * 第一个参数标书传入到异步任务中并进行操作，通常是网络的路径
  	 * 第二个参数表示进度的刻度
