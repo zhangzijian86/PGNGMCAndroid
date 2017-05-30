@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_Bike;
+import com.pg.ngmc.pgngmcandroid.bean.PGNGMC_User;
 
 
 public class JsonUtil {
@@ -19,14 +20,14 @@ public class JsonUtil {
 		return list;
 
 	}
-//	public List<Ppdr_dailyrecycle> StringFromJsonRecycle (String jsondata)
-//	{
-//		Type listType = new TypeToken<List<Ppdr_dailyrecycle>>(){}.getType();
-//		Gson gson=new Gson();
-//		ArrayList<Ppdr_dailyrecycle> list=gson.fromJson(jsondata, listType);
-//		return list;
-//
-//	}
+	public List<PGNGMC_User> StringFromJsonUser (String jsondata)
+	{
+		Type listType = new TypeToken<List<PGNGMC_User>>(){}.getType();
+		Gson gson=new Gson();
+		ArrayList<PGNGMC_User> list=gson.fromJson(jsondata, listType);
+		return list;
+	}
+
 //	public List<Pgdr_price> StringFromJsonPrice(String jsondata)
 //	{
 //		Type listType = new TypeToken<List<Pgdr_price>>(){}.getType();

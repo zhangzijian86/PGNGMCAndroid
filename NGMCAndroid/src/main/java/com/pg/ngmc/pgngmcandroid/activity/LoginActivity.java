@@ -32,6 +32,7 @@ public class LoginActivity extends Activity {
 	private EditText yanzhengma;
 	private PGNGMC_APP_User pgngmc_app_user;
 	private LoadingProgressDialog dialog;
+	private String yanzhengmaReturn;
 	 @Override
 	 protected void onCreate(Bundle savedInstanceState) {
 		 super.onCreate(savedInstanceState);
@@ -45,14 +46,35 @@ public class LoginActivity extends Activity {
 		 queding  = (Button) findViewById(R.id.queding);
 		 yanzhengmabt  = (Button) findViewById(R.id.yanzhengmabt);
 
+		 yanzhengmabt.setOnClickListener(new OnClickListener() {
+			 @Override
+			 public void onClick(View view) {
+				 String phoneNumber = shoujihaoma.getText().toString().trim();
+				 new UserRegisterYanZhengMaAsyncTask().execute(new String[]{phoneNumber});
+			 }
+		 });
 
-		 shoujihaoma.addTextChangedListener(textWatcher);
+		 queding.setOnClickListener(new OnClickListener() {
+			  @Override
+			  public void onClick(View view) {
+				  String phoneNumber = shoujihaoma.getText().toString().trim();
+				  String yanZhengMa = yanzhengma.getText().toString().trim();
+				  if(yanzhengmaReturn.equals(yanZhengMa)){
+					  new UserRegisterAsyncTask().execute(new String[]{phoneNumber});
+				  }
+			  }
+		  });
+
+
+			 shoujihaoma.addTextChangedListener(textWatcher);
 		 yanzhengma.addTextChangedListener(textWatcher);
 
-		 dialog=new LoadingProgressDialog(this,"正在加载...");
+			 dialog=new
+
+			 LoadingProgressDialog(this,"正在加载...");
 	 }
 
-	private TextWatcher textWatcher = new TextWatcher() {
+		 private TextWatcher textWatcher = new TextWatcher() {
 
 		@Override
 		public void onTextChanged(CharSequence s, int start, int before,
@@ -82,71 +104,122 @@ public class LoginActivity extends Activity {
 	};
 
 	/**
- 	 * dis：AsyncTask参数类型：
- 	 * 第一个参数标书传入到异步任务中并进行操作，通常是网络的路径
- 	 * 第二个参数表示进度的刻度
- 	 * 第三个参数表示返回的结果类型
- 	 * */
- 	private class UserLoginAsyncTask extends AsyncTask<String, String, String>{
- 		//任务执行之前的操作
- 		@Override
- 		protected void onPreExecute() {
- 			// TODO Auto-generated method stub
- 			super.onPreExecute();
- 			dialog.show();//显示dialog，数据正在处理....
- 		}
- 		//完成耗时操作
- 		@Override
- 		protected String doInBackground(String... params) {
- 			// TODO Auto-generated method stub
- 			try{
- 				Operaton operaton=new Operaton();
- 				String result="";//operaton.login("Login", params[0], params[1]);
-// 				if(!result.equals("false")){
-// 	 				JsonUtil jsonUtil=new JsonUtil();
-// 					List<PGNGMC_User> list1=(List<PGNGMC_User>) jsonUtil.StringFromJson(result);
-// 					Pgdr_user user=list1.get(0);
-// 					if(user.isUser_return()){
-// 						puser.setUser_id(user.getUser_id());
-// 						puser.setUser_name(user.getUser_name());
-// 						puser.setUser_password(user.getUser_password());
-// 						puser.setUser_mobile(user.getUser_mobile());
-// 						puser.setUser_address(user.getUser_address());
-// 						puser.setUser_email(user.getUser_email());
-// 						puser.setUser_status("1");
-// 						puser.setUser_type(user.getUser_type());
-// 						puser.setUser_photo(user.getUser_photo());
-// 						puser.setUser_return(true);
-// 						Log.d("====com.pg.pg.login.LoginActivity====", "getUser_id()"+puser.getUser_id());
-// 						Log.d("====com.pg.pg.login.LoginActivity====", "getUser_mobile()"+puser.getUser_mobile());
-// 						Log.d("====com.pg.pg.login.LoginActivity====", "getUser_password()"+puser.getUser_password());
-// 						return "success";
-// 					}else{
-// 						return "false";
-// 					}
-// 				}else{
-// 					return "false";
-// 				}
- 			}catch(Exception e) {
+	 * dis：AsyncTask参数类型：
+	 * 第一个参数标书传入到异步任务中并进行操作，通常是网络的路径
+	 * 第二个参数表示进度的刻度
+	 * 第三个参数表示返回的结果类型
+	 * */
+	private class UserRegisterYanZhengMaAsyncTask extends AsyncTask<String, String, String>{
+		//任务执行之前的操作
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			dialog.show();//显示dialog，数据正在处理....
+		}
+		//完成耗时操作
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try{
+				Operaton operaton=new Operaton();
+				String result = "";
+				result=operaton.checkPhoneNumber("GetYZM", params[0]);
+				return result;
+			}catch(Exception e){
 				e.printStackTrace();
 				return "false";
 			}
- 			return "false";
- 		}
- 		
- 		@Override
- 		protected void onProgressUpdate(String... values) {
- 			// TODO Auto-generated method stub
- 			super.onProgressUpdate(values);
- 			
- 		}
- 		
- 		//数据处理完毕后更新UI操作
- 		@Override
- 		protected void onPostExecute(String result) {
- 			// TODO Auto-generated method stub
- 			super.onPostExecute(result);
- 			dialog.dismiss();//dialog关闭，数据处理完毕
- 		}
- 	}
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+
+		}
+
+		//数据处理完毕后更新UI操作
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+
+			if(result!=null){
+				if(result.startsWith("no")){
+					Toast.makeText(getApplicationContext(), "请求成功，等待短信验证码发送！", Toast.LENGTH_SHORT).show();
+					yanzhengmaReturn = result.substring(2, result.length());
+					Log.d("=yanzhengmaReturn==", yanzhengmaReturn);
+				}
+				else if("false".equals(result)){
+					Toast.makeText(getApplicationContext(), "验证码请求失败，请重新请求！", Toast.LENGTH_SHORT).show();
+				}
+			}else{
+				Toast.makeText(getApplicationContext(), "验证码请求失败，请重新请求！", Toast.LENGTH_SHORT).show();
+			}
+			dialog.dismiss();//dialog关闭，数据处理完毕
+		}
+	}
+
+	/**
+	 * dis：AsyncTask参数类型：
+	 * 第一个参数标书传入到异步任务中并进行操作，通常是网络的路径
+	 * 第二个参数表示进度的刻度
+	 * 第三个参数表示返回的结果类型
+	 * */
+	private class UserRegisterAsyncTask extends AsyncTask<String, String, String>{
+		//任务执行之前的操作
+		@Override
+		protected void onPreExecute() {
+			// TODO Auto-generated method stub
+			super.onPreExecute();
+			dialog.show();//显示dialog，数据正在处理....
+		}
+		//完成耗时操作
+		@Override
+		protected String doInBackground(String... params) {
+			// TODO Auto-generated method stub
+			try{
+				Operaton operaton=new Operaton();
+				String result=operaton.UpData("Register", params[0]);
+				return result;
+			}catch(Exception e){
+				e.printStackTrace();
+				return "";
+			}
+		}
+
+		@Override
+		protected void onProgressUpdate(String... values) {
+			// TODO Auto-generated method stub
+			super.onProgressUpdate(values);
+
+		}
+
+		//数据处理完毕后更新UI操作
+		@Override
+		protected void onPostExecute(String result) {
+			// TODO Auto-generated method stub
+			super.onPostExecute(result);
+			if(!result.equals("no")){
+				Toast.makeText(getApplicationContext(), "验证成功！", Toast.LENGTH_SHORT).show();
+				Log.d("=====LoginActivity=====", "===getUSER_Mobile=000="+result);
+				JsonUtil jsonUtil=new JsonUtil();
+				List<PGNGMC_User> list1=(List<PGNGMC_User>) jsonUtil.StringFromJsonUser(result);
+				PGNGMC_User user=list1.get(0);
+				Log.d("=====LoginActivity=====", "===getUSER_Mobile=111=" + user.getUSER_Mobile());
+				pgngmc_app_user.setUSER_Mobile(user.getUSER_Mobile());
+				pgngmc_app_user.setUSER_ID(user.getUSER_ID());
+				pgngmc_app_user.setUSER_ISDN(user.getUSER_ISDN());
+				pgngmc_app_user.setUSER_RegisterDate(user.getUSER_RegisterDate());
+				pgngmc_app_user.setUSER_Status(user.getUSER_Status());
+				pgngmc_app_user.setUSER_DepositStatus(user.getUSER_DepositStatus());
+				pgngmc_app_user.setUSER_DepositNumber(user.getUSER_DepositNumber());
+				LoginActivity.this.finish();
+			}else if("".equals(result)){
+				Toast.makeText(getApplicationContext(), "验证失败，请重新验证！", Toast.LENGTH_SHORT).show();
+			}
+			dialog.dismiss();//dialog关闭，数据处理完毕
+		}
+	}
 }

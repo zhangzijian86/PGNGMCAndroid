@@ -70,6 +70,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        pgngmc_app_user = (PGNGMC_APP_User) getApplication();
         len = 0;
     }
 
@@ -102,7 +103,7 @@ public class MainActivity extends FragmentActivity {
         saomakaisuo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                Log.d("=====MainActivity=====", "====saomakaisuo====");
+                Log.d("=====MainActivity=====", "====saomakaisuo===="+pgngmc_app_user.getUSER_Mobile());
                 if (pgngmc_app_user.getUSER_Mobile().equals("")) {
                     Log.d("=====MainActivity=====", "====saomakaisuo===false=");
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));

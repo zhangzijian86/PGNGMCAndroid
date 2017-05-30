@@ -258,6 +258,41 @@ public class Operaton
 		return result;  
 	}
 
+	public String GetYZM(String url,String phoneNumber)
+	{
+		String result=null;
+		ConnNet connNet=new ConnNet();
+		List<NameValuePair> params=new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("phoneNumber", phoneNumber));
+		try {
+			HttpEntity entity=new UrlEncodedFormEntity(params, HTTP.UTF_8);
+			HttpPost httpPost=connNet.gethttPost(url);
+			System.out.println(httpPost.toString());
+			httpPost.setEntity(entity);
+			HttpClient client=new DefaultHttpClient();
+			HttpResponse httpResponse=client.execute(httpPost);
+			if (httpResponse.getStatusLine().getStatusCode()==HttpStatus.SC_OK)
+			{
+				result=EntityUtils.toString(httpResponse.getEntity(), "utf-8");
+				System.out.println("resu"+result);
+			}
+		} catch (UnsupportedEncodingException e) {
+
+			e.printStackTrace();
+		} catch (ClientProtocolException e) {
+
+			e.printStackTrace();
+		} catch (ParseException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return result;
+	}
+
+
 	public String UpdateUser(String uripath,String jsonString)
 	{ 
 		String result = null;
@@ -328,11 +363,11 @@ public class Operaton
 		return result;  
 	}
 	
-	public String UpData(String uripath,String jsonString)
+	public String UpData(String uripath,String phoneNumber)
 	{ 
 		String result = null;
 		List<NameValuePair> list=new ArrayList<NameValuePair>();
-		NameValuePair nvp=new BasicNameValuePair("jsonstring", jsonString);
+		NameValuePair nvp=new BasicNameValuePair("phoneNumber", phoneNumber);
 		list.add(nvp);
 		ConnNet connNet=new ConnNet();
 		HttpPost httpPost=connNet.gethttPost(uripath);
@@ -348,7 +383,7 @@ public class Operaton
 				System.out.println("resu"+result);
 			}
 			else {
-				result="注册失败";
+				result="验证失败";
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
