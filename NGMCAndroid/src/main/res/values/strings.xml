@@ -1,5 +1,8 @@
 <resources>
     <string name="title">南瓜马车</string>
+
+    <string name="starttime">00:00:00</string>
+
     <string name="biketitle">用车</string>
     <string name="activitytitle">活动</string>
     <string name="tickettitle">购票</string>

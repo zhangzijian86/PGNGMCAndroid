@@ -108,13 +108,17 @@ public class MainActivity extends FragmentActivity {
                     Log.d("=====MainActivity=====", "====saomakaisuo===false=");
                     startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 } else {
-                    resultCodeStr = "";
-                    len=0;
-                    seekBar.setProgress(len);
-                    Intent intent = new Intent();
-                    intent.setClass(MainActivity.this, MipcaActivityCapture.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                    if(pgngmc_app_user.getUSER_ISDN()==null||pgngmc_app_user.getUSER_ISDN().equals("")){
+                        startActivity(new Intent(MainActivity.this, ISDNActivity.class));
+                    }else{
+                        resultCodeStr = "";
+                        len=0;
+                        seekBar.setProgress(len);
+                        Intent intent = new Intent();
+                        intent.setClass(MainActivity.this, MipcaActivityCapture.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivityForResult(intent, SCANNIN_GREQUEST_CODE);
+                    }
                 }
             }
         });
@@ -227,11 +231,15 @@ public class MainActivity extends FragmentActivity {
                     }
                     break;
                 case 0://开锁成功
-                    Log.d("=====handler=====", "====成功=");
+                    Log.d("=====handler=====", "====成功="+resultCodeStr);
                     jindu.setVisibility(View.INVISIBLE);
-                    resultCodeStr = "";
                     seekBar.setProgress(100);
-                    Toast.makeText(getApplicationContext(), "开锁成功！", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setClass(MainActivity.this, RecordTimeActivity.class);
+                    intent.putExtra("bikecode", resultCodeStr);
+                    startActivity(intent);
+                    //Toast.makeText(getApplicationContext(), "开锁成功！", Toast.LENGTH_SHORT).show();
+                    resultCodeStr = "";
                     break;
             }
 

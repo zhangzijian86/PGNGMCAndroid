@@ -1,7 +1,9 @@
 package com.pg.ngmc.pgngmcandroid.activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -215,6 +217,7 @@ public class LoginActivity extends Activity {
 				pgngmc_app_user.setUSER_Status(user.getUSER_Status());
 				pgngmc_app_user.setUSER_DepositStatus(user.getUSER_DepositStatus());
 				pgngmc_app_user.setUSER_DepositNumber(user.getUSER_DepositNumber());
+				setValue("USER_Mobile", user.getUSER_Mobile());
 				LoginActivity.this.finish();
 			}else if("".equals(result)){
 				Toast.makeText(getApplicationContext(), "验证失败，请重新验证！", Toast.LENGTH_SHORT).show();
@@ -222,4 +225,15 @@ public class LoginActivity extends Activity {
 			dialog.dismiss();//dialog关闭，数据处理完毕
 		}
 	}
+	private void setValue(String type,String value){
+		//获取SharedPreferences对象，路径在/data/data/cn.itcast.preferences/shared_pref/paramater.xml
+		SharedPreferences sp=getSharedPreferences("paramater", Context.MODE_PRIVATE);
+		//获取编辑器
+		SharedPreferences.Editor editor=sp.edit();
+		//通过editor进行设置
+		editor.putString(type,value);
+		//提交修改，将数据写到文件
+		editor.commit();
+	}
+
 }
