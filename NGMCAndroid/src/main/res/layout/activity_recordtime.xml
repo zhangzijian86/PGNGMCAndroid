@@ -4,13 +4,13 @@
     android:background="@color/activity_bg_color">
 
     <TextView
-        android:id="@+id/logotitle"
-        android:layout_marginTop="10dip"
+        android:id="@+id/timetv"
+        android:layout_marginTop="60dip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/starttime"
         android:layout_centerHorizontal="true"
-        android:textSize="20sp"
+        android:textSize="50sp"
         android:textColor="#FD7A5C"
         />
 

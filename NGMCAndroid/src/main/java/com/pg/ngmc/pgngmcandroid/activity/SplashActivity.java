@@ -102,7 +102,7 @@ public class SplashActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
-            if(!result.equals("no")){
+            if(result!=null&&!result.equals("no")){
                 //Toast.makeText(getApplicationContext(), "验证成功！", Toast.LENGTH_SHORT).show();
                 Log.d("=====LoginActivity=====", "===getUSER_Mobile=000=" + result);
                 JsonUtil jsonUtil=new JsonUtil();
